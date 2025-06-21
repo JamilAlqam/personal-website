@@ -1,65 +1,9 @@
 const nodemailer = require("nodemailer");
-const multer = require("multer");
-const { body, validationResult } = require("express-validator");
-
-// إعداد multer للذاكرة (Vercel لا يدعم تخزين الملفات على القرص)
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB حد أقصى لكل ملف
-    files: 5, // حد أقصى 5 ملفات
-  },
-  fileFilter: function (req, file, cb) {
-    // السماح بأنواع ملفات محددة فقط
-    const allowedTypes = /jpeg|jpg|png|gif|pdf|xlsx|doc|docx|txt/;
-    const extname = allowedTypes.test(
-      file.originalname.split(".").pop().toLowerCase()
-    );
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(
-        new Error(
-          "نوع الملف غير مسموح. الأنواع المسموحة: JPEG, JPG, PNG, xlsx, GIF, PDF, DOC, DOCX, TXT"
-        )
-      );
-    }
-  },
-});
-
-// قواعد التحقق من صحة البيانات
-const validateContactForm = [
-  body("name")
-    .trim()
-    .isLength({ min: 2, max: 100 })
-    .withMessage("الاسم يجب أن يكون بين 2 و 100 حرف")
-    .matches(/^[\u0600-\u06FFa-zA-Z\s]+$/)
-    .withMessage("الاسم يجب أن يحتوي على أحرف عربية أو إنجليزية فقط"),
-
-  body("email")
-    .trim()
-    .isEmail()
-    .withMessage("يرجى إدخال بريد إلكتروني صحيح")
-    .normalizeEmail(),
-
-  body("subject")
-    .optional()
-    .trim()
-    .isLength({ max: 200 })
-    .withMessage("الموضوع يجب ألا يتجاوز 200 حرف"),
-
-  body("message")
-    .trim()
-    .isLength({ min: 10, max: 2000 })
-    .withMessage("الرسالة يجب أن تكون بين 10 و 2000 حرف"),
-];
 
 // Rate limiting storage (في الذاكرة - للإنتاج يفضل استخدام Redis)
 const rateLimitStore = new Map();
 
-function checkRateLimit(ip, limit = 20, windowMs = 60 * 60 * 1000) {
+function checkRateLimit(ip, limit = 5, windowMs = 60 * 60 * 1000) {
   const now = Date.now();
   const windowStart = now - windowMs;
 
@@ -80,16 +24,24 @@ function checkRateLimit(ip, limit = 20, windowMs = 60 * 60 * 1000) {
   return true;
 }
 
-// دالة مساعدة لتشغيل middleware
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
+// دالة للتحقق من صحة البيانات
+function validateInput(name, email, message) {
+  const errors = [];
+
+  if (!name || name.trim().length < 2 || name.trim().length > 100) {
+    errors.push("الاسم يجب أن يكون بين 2 و 100 حرف");
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    errors.push("يرجى إدخال بريد إلكتروني صحيح");
+  }
+
+  if (!message || message.trim().length < 10 || message.trim().length > 2000) {
+    errors.push("الرسالة يجب أن تكون بين 10 و 2000 حرف");
+  }
+
+  return errors;
 }
 
 export default async function handler(req, res) {
@@ -120,64 +72,50 @@ export default async function handler(req, res) {
       req.headers["x-forwarded-for"] ||
       req.connection.remoteAddress ||
       "unknown";
-    const contactRateLimit = parseInt(process.env.CONTACT_RATE_LIMIT) || 20;
-    const contactWindowHours = parseInt(process.env.CONTACT_WINDOW_HOURS) || 1;
 
-    if (
-      !checkRateLimit(
-        clientIP,
-        contactRateLimit,
-        contactWindowHours * 60 * 60 * 1000
-      )
-    ) {
+    if (!checkRateLimit(clientIP, 5, 60 * 60 * 1000)) {
       return res.status(429).json({
-        message: `تم تجاوز الحد المسموح من الرسائل (${contactRateLimit} رسالة/${
-          contactWindowHours === 1 ? "ساعة" : contactWindowHours + " ساعات"
-        }). يرجى المحاولة لاحقاً.`,
-      });
-    }
-
-    // تشغيل multer
-    await runMiddleware(req, res, upload.array("attachments", 5));
-
-    // تشغيل التحقق من صحة البيانات
-    for (const validation of validateContactForm) {
-      await runMiddleware(req, res, validation);
-    }
-
-    // فحص أخطاء التحقق من صحة البيانات
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: "بيانات غير صحيحة",
-        errors: errors.array().map((err) => err.msg),
+        message:
+          "تم تجاوز الحد المسموح من الرسائل (5 رسائل/ساعة). يرجى المحاولة لاحقاً.",
       });
     }
 
     // التحقق من صحة البيانات
     const { name, email, subject, message } = req.body;
 
+    const validationErrors = validateInput(name, email, message);
+    if (validationErrors.length > 0) {
+      return res.status(400).json({
+        message: "بيانات غير صحيحة",
+        errors: validationErrors,
+      });
+    }
+
+    // التحقق من متغيرات البيئة
+    if (
+      !process.env.SMTP_HOST ||
+      !process.env.EMAIL_USER ||
+      !process.env.EMAIL_PASS
+    ) {
+      console.error("Missing environment variables:", {
+        SMTP_HOST: !!process.env.SMTP_HOST,
+        EMAIL_USER: !!process.env.EMAIL_USER,
+        EMAIL_PASS: !!process.env.EMAIL_PASS,
+        SMTP_PORT: process.env.SMTP_PORT,
+      });
+      return res.status(500).json({ message: "خطأ في إعدادات الخادم" });
+    }
+
     // إعداد النقل
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: process.env.SMTP_PORT,
+      port: parseInt(process.env.SMTP_PORT) || 587,
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
-
-    // إعداد المرفقات
-    const attachments = [];
-    if (req.files && req.files.length > 0) {
-      req.files.forEach((file) => {
-        attachments.push({
-          filename: file.originalname,
-          content: file.buffer,
-        });
-      });
-    }
 
     // إعداد خيارات البريد
     const mailOptions = {
@@ -198,20 +136,8 @@ export default async function handler(req, res) {
         <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
           ${message.replace(/\n/g, "<br>")}
         </div>
-        ${
-          attachments.length > 0
-            ? `
-        <hr>
-        <h3>المرفقات:</h3>
-        <ul>
-          ${attachments.map((att) => `<li>${att.filename}</li>`).join("")}
-        </ul>
-        `
-            : ""
-        }
       </div>
     `,
-      attachments: attachments,
     };
 
     // إرسال البريد
@@ -220,24 +146,9 @@ export default async function handler(req, res) {
     res.status(200).json({ message: "تم إرسال الرسالة بنجاح" });
   } catch (error) {
     console.error("Error sending email:", error);
-
-    if (error instanceof multer.MulterError) {
-      if (error.code === "LIMIT_FILE_SIZE") {
-        return res
-          .status(400)
-          .json({ message: "حجم الملف كبير جداً. الحد الأقصى 10MB" });
-      }
-      if (error.code === "LIMIT_FILE_COUNT") {
-        return res
-          .status(400)
-          .json({ message: "عدد الملفات كبير جداً. الحد الأقصى 5 ملفات" });
-      }
-    }
-
-    if (error.message && error.message.includes("نوع الملف غير مسموح")) {
-      return res.status(400).json({ message: error.message });
-    }
-
-    res.status(500).json({ message: "حدث خطأ أثناء إرسال الرسالة" });
+    res.status(500).json({
+      message: "حدث خطأ أثناء إرسال الرسالة",
+      error: error.message,
+    });
   }
 }
