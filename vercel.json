@@ -24,6 +24,10 @@
       "dest": "/api/send-email"
     },
     {
+      "src": "/api/test",
+      "dest": "/api/test"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
