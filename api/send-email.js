@@ -1,65 +1,13 @@
 const nodemailer = require("nodemailer");
 
-// Rate limiting storage (في الذاكرة - للإنتاج يفضل استخدام Redis)
-const rateLimitStore = new Map();
-
-function checkRateLimit(ip, limit = 5, windowMs = 60 * 60 * 1000) {
-  const now = Date.now();
-  const windowStart = now - windowMs;
-
-  if (!rateLimitStore.has(ip)) {
-    rateLimitStore.set(ip, []);
-  }
-
-  const requests = rateLimitStore.get(ip);
-  // إزالة الطلبات القديمة
-  const validRequests = requests.filter((time) => time > windowStart);
-
-  if (validRequests.length >= limit) {
-    return false;
-  }
-
-  validRequests.push(now);
-  rateLimitStore.set(ip, validRequests);
-  return true;
-}
-
-// دالة للتحقق من صحة البيانات
-function validateInput(name, email, message) {
-  const errors = [];
-
-  if (!name || name.trim().length < 2 || name.trim().length > 100) {
-    errors.push("الاسم يجب أن يكون بين 2 و 100 حرف");
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    errors.push("يرجى إدخال بريد إلكتروني صحيح");
-  }
-
-  if (!message || message.trim().length < 10 || message.trim().length > 2000) {
-    errors.push("الرسالة يجب أن تكون بين 10 و 2000 حرف");
-  }
-
-  return errors;
-}
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // السماح بـ CORS
-  res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-  );
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    res.status(200).end();
-    return;
+    return res.status(200).end();
   }
 
   if (req.method !== "POST") {
@@ -67,42 +15,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    // فحص معدل الطلبات
-    const clientIP =
-      req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      "unknown";
+    console.log("Request received:", req.method);
+    console.log("Request body:", req.body);
 
-    if (!checkRateLimit(clientIP, 5, 60 * 60 * 1000)) {
-      return res.status(429).json({
-        message:
-          "تم تجاوز الحد المسموح من الرسائل (5 رسائل/ساعة). يرجى المحاولة لاحقاً.",
-      });
-    }
+    // التحقق من البيانات الأساسية
+    const { name, email, message, subject } = req.body;
 
-    // التحقق من صحة البيانات
-    const { name, email, subject, message } = req.body;
-
-    const validationErrors = validateInput(name, email, message);
-    if (validationErrors.length > 0) {
+    if (!name || !email || !message) {
       return res.status(400).json({
-        message: "بيانات غير صحيحة",
-        errors: validationErrors,
+        message: "الرجاء ملء جميع الحقول المطلوبة",
       });
     }
 
     // التحقق من متغيرات البيئة
+    console.log("Environment variables check:", {
+      SMTP_HOST: !!process.env.SMTP_HOST,
+      EMAIL_USER: !!process.env.EMAIL_USER,
+      EMAIL_PASS: !!process.env.EMAIL_PASS,
+      SMTP_PORT: process.env.SMTP_PORT,
+    });
+
     if (
       !process.env.SMTP_HOST ||
       !process.env.EMAIL_USER ||
       !process.env.EMAIL_PASS
     ) {
-      console.error("Missing environment variables:", {
-        SMTP_HOST: !!process.env.SMTP_HOST,
-        EMAIL_USER: !!process.env.EMAIL_USER,
-        EMAIL_PASS: !!process.env.EMAIL_PASS,
-        SMTP_PORT: process.env.SMTP_PORT,
-      });
+      console.error("Missing environment variables");
       return res.status(500).json({ message: "خطأ في إعدادات الخادم" });
     }
 
@@ -117,38 +55,40 @@ export default async function handler(req, res) {
       },
     });
 
+    console.log("Transporter created successfully");
+
     // إعداد خيارات البريد
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: `رسالة جديدة من ${name}: ${
-        subject || "رسالة من موقع جميل علقم"
-      }`,
+      subject: `رسالة جديدة من ${name}`,
       html: `
-      <div dir="rtl" style="font-family: Arial, sans-serif;">
-        <h2>رسالة جديدة من الموقع</h2>
-        <hr>
-        <p><strong>اسم المرسل:</strong> ${name}</p>
-        <p><strong>البريد الإلكتروني:</strong> ${email}</p>
-        <p><strong>الموضوع:</strong> ${subject || "رسالة من موقع جميل علقم"}</p>
-        <hr>
-        <h3>نص الرسالة:</h3>
-        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
-          ${message.replace(/\n/g, "<br>")}
+        <div dir="rtl" style="font-family: Arial, sans-serif;">
+          <h2>رسالة جديدة من الموقع</h2>
+          <p><strong>الاسم:</strong> ${name}</p>
+          <p><strong>البريد الإلكتروني:</strong> ${email}</p>
+          <p><strong>الموضوع:</strong> ${subject || "بدون موضوع"}</p>
+          <p><strong>الرسالة:</strong></p>
+          <div style="background: #f5f5f5; padding: 10px; border-radius: 5px;">
+            ${message.replace(/\n/g, "<br>")}
+          </div>
         </div>
-      </div>
-    `,
+      `,
     };
 
-    // إرسال البريد
-    await transporter.sendMail(mailOptions);
+    console.log("Attempting to send email...");
 
-    res.status(200).json({ message: "تم إرسال الرسالة بنجاح" });
+    // إرسال البريد
+    const result = await transporter.sendMail(mailOptions);
+
+    console.log("Email sent successfully:", result.messageId);
+
+    return res.status(200).json({ message: "تم إرسال الرسالة بنجاح" });
   } catch (error) {
-    console.error("Error sending email:", error);
-    res.status(500).json({
+    console.error("Error in handler:", error);
+    return res.status(500).json({
       message: "حدث خطأ أثناء إرسال الرسالة",
       error: error.message,
     });
   }
-}
+};
