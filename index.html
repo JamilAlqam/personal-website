@@ -409,11 +409,51 @@
         }
       }
 
+      /* زر العودة للأعلى */
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #0760dc;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(7, 96, 220, 0.3);
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1001;
+      }
+
+      .back-to-top.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .back-to-top:hover {
+        background-color: #3498db;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(7, 96, 220, 0.4);
+      }
+
       /* التجاوب */
       @media (max-width: 768px) {
         .navbar {
           flex-direction: column;
           padding: 1rem;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          transform: translateY(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        .navbar.show {
+          transform: translateY(0);
         }
 
         .nav-links {
@@ -432,6 +472,11 @@
 
         .skills-container {
           grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+
+        /* إضافة مساحة علوية للمحتوى في الشاشات الصغيرة */
+        .hero-section {
+          margin-top: 120px;
         }
       }
     </style>
@@ -496,14 +541,11 @@
       <div
         class="about-container"
         style="
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 2rem;
           max-width: 1200px;
           margin: 0 auto;
         "
       >
-        <!-- القسم الأيمن - الخبرة المهنية والتعليم -->
+        <!-- قسم الخبرة المهنية والتعليم - الآن في الأعلى -->
         <div
           class="experience-section"
           style="
@@ -511,6 +553,7 @@
             padding: 2rem;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
           "
         >
           <h3
@@ -554,7 +597,7 @@
           </p>
         </div>
 
-        <!-- القسم الأيسر - الاهتمامات -->
+        <!-- قسم الاهتمامات - الآن في الأسفل -->
         <div
           class="interests-section"
           style="
@@ -581,7 +624,7 @@
 
           <div
             class="interests-grid"
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem"
           >
             <!-- اهتمام 1 -->
             <div
@@ -870,6 +913,11 @@
       </div>
     </section>
 
+    <!-- زر العودة للأعلى -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
     <!-- الفوتر -->
     <footer>
       <div class="footer-content">
@@ -888,6 +936,51 @@
     <script>
       // سنة حقوق النشر تلقائية
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      // التحكم في الهيدر المتحرك للشاشات الصغيرة
+      let lastScrollTop = 0;
+      const navbar = document.querySelector('.navbar');
+      const backToTopBtn = document.getElementById('backToTop');
+
+      window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        // التحكم في الهيدر للشاشات الصغيرة فقط
+        if (window.innerWidth <= 768) {
+          if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // النزول للأسفل - إخفاء الهيدر
+            navbar.classList.remove('show');
+          } else {
+            // الصعود للأعلى - إظهار الهيدر
+            navbar.classList.add('show');
+          }
+        } else {
+          // للشاشات الكبيرة - إظهار الهيدر دائماً
+          navbar.classList.add('show');
+        }
+
+        // التحكم في زر العودة للأعلى
+        if (scrollTop > 300) {
+          backToTopBtn.classList.add('show');
+        } else {
+          backToTopBtn.classList.remove('show');
+        }
+
+        lastScrollTop = scrollTop;
+      });
+
+      // وظيفة العودة للأعلى
+      function scrollToTop() {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+
+      // إظهار الهيدر عند تحميل الصفحة
+      window.addEventListener('load', function() {
+        navbar.classList.add('show');
+      });
 
       // تأثيرات عند التمرير
       document.addEventListener("DOMContentLoaded", function () {
