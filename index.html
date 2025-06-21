@@ -445,15 +445,7 @@
         .navbar {
           flex-direction: column;
           padding: 1rem;
-          position: fixed;
-          width: 100%;
-          top: 0;
-          transform: translateY(-100%);
-          transition: transform 0.3s ease;
-        }
-
-        .navbar.show {
-          transform: translateY(0);
+          position: relative; /* تغيير من fixed إلى relative ليتحرك مع الصفحة */
         }
 
         .nav-links {
@@ -474,9 +466,9 @@
           grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         }
 
-        /* إضافة مساحة علوية للمحتوى في الشاشات الصغيرة */
+        /* إزالة المساحة العلوية لأن الهيدر لم يعد ثابتاً */
         .hero-section {
-          margin-top: 120px;
+          margin-top: 0;
         }
       }
     </style>
@@ -937,27 +929,11 @@
       // سنة حقوق النشر تلقائية
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      // التحكم في الهيدر المتحرك للشاشات الصغيرة
-      let lastScrollTop = 0;
-      const navbar = document.querySelector('.navbar');
+      // التحكم في زر العودة للأعلى فقط
       const backToTopBtn = document.getElementById('backToTop');
 
       window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-        // التحكم في الهيدر للشاشات الصغيرة فقط
-        if (window.innerWidth <= 768) {
-          if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // النزول للأسفل - إخفاء الهيدر
-            navbar.classList.remove('show');
-          } else {
-            // الصعود للأعلى - إظهار الهيدر
-            navbar.classList.add('show');
-          }
-        } else {
-          // للشاشات الكبيرة - إظهار الهيدر دائماً
-          navbar.classList.add('show');
-        }
 
         // التحكم في زر العودة للأعلى
         if (scrollTop > 300) {
@@ -965,8 +941,6 @@
         } else {
           backToTopBtn.classList.remove('show');
         }
-
-        lastScrollTop = scrollTop;
       });
 
       // وظيفة العودة للأعلى
@@ -976,11 +950,6 @@
           behavior: 'smooth'
         });
       }
-
-      // إظهار الهيدر عند تحميل الصفحة
-      window.addEventListener('load', function() {
-        navbar.classList.add('show');
-      });
 
       // تأثيرات عند التمرير
       document.addEventListener("DOMContentLoaded", function () {
