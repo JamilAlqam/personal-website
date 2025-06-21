@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جميل علقم - الصفحة الرئيسية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Cairo:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* الخطوط العامة */
+      @font-face {
+        font-family: "Bahij TheSansArabic";
+        src: url("fonts/Bahij_TheSansArabic-Plain.woff2") format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Tajawal", "Cairo", sans-serif;
+        background-color: #f5f5f5; /* تغيير لون الخلفية */
+        color: #333;
+        line-height: 1.7;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Bahij TheSansArabic", "Tajawal", sans-serif;
+        font-weight: 700;
+      }
+
+      /* شريط التنقل */
+      .navbar {
+        background-color: whitesmoke;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        color: #0760dc;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: black;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .nav-links a:hover {
+        color: #3498db;
+        transform: translateY(-2px);
+      }
+
+      /* قسم الهوية */
+      .hero-section {
+        padding: 4rem 2rem;
+        background: #0760dc; /* تغيير لون الخلفية إلى أبيض */
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0; /* إضافة حد فاصل */
+      }
+
+      .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .profile-image {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #f5f5f5; /* تعديل لون الحدود */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .profile-image:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .name-title {
+        margin-bottom: 1rem;
+      }
+
+      .full-name {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .nickname {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-bottom: 1rem;
+      }
+
+      .experience {
+        font-size: 1.1rem;
+        color: #34495e;
+        margin-bottom: 1.5rem;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .details {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        font-size: 0.95rem;
+        color: #555; /* تعديل لون النص */
+      }
+
+      .detail-item i {
+        margin-left: 0.5rem;
+        color: #3498db;
+      }
+
+      /* الأقسام العامة */
+      .section {
+        padding: 3rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #ffffff; /* خلفية بيضاء للأقسام */
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        margin-bottom: 2rem;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: #2c3e50;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #3498db;
+      }
+
+      /* قسم نبذة عني */
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .about-text {
+        background-color: #f9f9f9; /* لون خلفية فاتح */
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+        border: 1px solid #eee; /* إضافة حد خفيف */
+      }
+
+      .about-text:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .about-text h3 {
+        color: #3498db;
+        margin-bottom: 1rem;
+      }
+
+      .about-text ul {
+        list-style-position: inside;
+        margin-top: 1rem;
+      }
+
+      .about-text li {
+        margin-bottom: 0.5rem;
+        color: #555; /* تعديل لون النص */
+      }
+
+      /* قسم الأدوات والتقنيات */
+      .skills-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .skill-category {
+        background-color: #f9f9f9;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+      }
+
+      .skill-category:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .skill-category h3 {
+        color: #3498db;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .skill-category h3 i {
+        margin-left: 0.5rem;
+      }
+
+      .skill-item {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        color: #555;
+      }
+
+      .skill-item i {
+        margin-left: 0.5rem;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+
+      /* قسم الذكاء الاصطناعي */
+      .ai-tools {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .ai-tool {
+        background-color: #f9f9f9;
+        padding: 1rem 1.5rem;
+        border-radius: 30px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        border: 1px solid #eee;
+        color: #555;
+      }
+
+      .ai-tool:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        background-color: #3498db;
+        color: white;
+      }
+
+      .ai-tool i {
+        margin-left: 0.5rem;
+      }
+
+      /* قسم الفلسفة */
+      .philosophy {
+        background-color: #0760dc;
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .philosophy:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          45deg,
+          rgba(52, 152, 219, 0.1) 0%,
+          rgba(41, 128, 185, 0.2) 100%
+        );
+        z-index: 0;
+      }
+
+      .philosophy-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .philosophy-content h2 {
+        color: #3498db;
+        margin-bottom: 1.5rem;
+      }
+
+      .philosophy-content p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      .quote {
+        font-style: italic;
+        font-size: 1.2rem;
+        color:#333;
+        font-weight: bold;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        border-left: 8px solid #3498db;
+        background-color:whitesmoke ;
+        border-radius: 0 8px 8px 0;
+      }
+
+      /* الفوتر */
+      footer {
+        background-color: #0760dc;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+      }
+
+      .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .footer-name {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-family: "Bahij TheSansArabic", sans-serif;
+      }
+
+      .footer-quote {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+
+      .copyright {
+        font-size: 0.9rem;
+        color: #bdc3c7;
+      }
+
+      /* تأثيرات الحركة */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* التجاوب */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .nav-links {
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .nav-links li {
+          margin: 0.5rem;
+        }
+
+        .about-content {
+          grid-template-columns: 1fr;
+        }
+
+        .skills-container {
+          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+      <div class="logo">م. جميل علقم</div>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+        </li>
+        <li>
+          <a href="cv.html"><i class="fas fa-user-tie"></i> السيرة التدريبية</a>
+        </li>
+        <li>
+          <a href="services.html"><i class="fas fa-handshake"></i> الخدمات والدورات التدريبية</a>
+        </li>
+        <li>
+          <a href="certificates.html"
+            ><i class="fas fa-certificate"></i> الشهادات</a
+          >
+        </li>
+        <li>
+          <a href="contact.html"><i class="fas fa-envelope"></i> التواصل</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- قسم الهوية -->
+    <section class="hero-section">
+      <div class="profile-container">
+        <img
+          src="images/profile.png"
+          alt="صورة جميل علقم"
+          class="profile-image"
+        />
+        <div class="name-title">
+          <h1 class="full-name" style="color: white">
+            جميل أحمد عبدالرحيم علقم
+          </h1>
+          <p class="nickname" style="color: #ecf0f1">(أبو عمر)</p>
+        </div>
+        <p class="experience" style="color: #ecf0f1; font-weight: bolder">
+          خبرة في إدارة المصانع والإنتاج لمدة 18 سنة، ومدرب في عدة مجالات
+        </p>
+        <div class="details">
+          <!--<div class="detail-item" style="color: #ecf0f1; font-weight: bold">
+            <i class="fas fa-birthday-cake" style="color: #ecf0f1"></i>
+            <span>مواليد 1979</span>
+          </div>-->
+          <div class="detail-item" style="color: #ecf0f1; font-weight: bold">
+            <i class="fas fa-graduation-cap" style="color: #ecf0f1"></i>
+            <span>بكالوريوس هندسة ميكانيكية / إنتاج وآلات 2003</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- قسم نبذة عني - النسخة المعدلة -->
+    <section class="section" style="background-color: #f8f9fa">
+      <h2 class="section-title">نبذة عامة</h2>
+      <div
+        class="about-container"
+        style="
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
+        "
+      >
+        <!-- القسم الأيمن - الخبرة المهنية والتعليم -->
+        <div
+          class="experience-section"
+          style="
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <h3
+            style="
+              color: #2c3e50;
+              margin-bottom: 1.5rem;
+              display: flex;
+              align-items: center;
+            "
+          >
+            <i
+              class="fas fa-briefcase"
+              style="color: #3498db; margin-left: 0.5rem; font-size: 1.5rem"
+            ></i>
+            الخبرة المهنية
+          </h3>
+          <p style="margin-bottom: 1.5rem; line-height: 1.8; color: #555">
+            مدير مصنع والإنتاج لمدة 18 سنة في مصانع الحديد، مع خبرة واسعة في
+            الإدارة والتطوير الصناعي.
+          </p>
+
+          <h3
+            style="
+              color: #2c3e50;
+              margin: 2rem 0 1.5rem;
+              display: flex;
+              align-items: center;
+            "
+          >
+            <i
+              class="fas fa-graduation-cap"
+              style="color: #3498db; margin-left: 0.5rem; font-size: 1.5rem"
+            ></i>
+            التعليم
+          </h3>
+          <p style="margin-bottom: 0.5rem; color: #555">
+            بكالوريوس هندسة ميكانيكية / إنتاج وآلات
+          </p>
+          <p style="color: #555">
+            جامعة البلقاء التطبيقية / كلية الطفيلة - 2003
+          </p>
+        </div>
+
+        <!-- القسم الأيسر - الاهتمامات -->
+        <div
+          class="interests-section"
+          style="
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <h3
+            style="
+              color: #2c3e50;
+              margin-bottom: 1.5rem;
+              display: flex;
+              align-items: center;
+            "
+          >
+            <i
+              class="fas fa-star"
+              style="color: #3498db; margin-left: 0.5rem; font-size: 1.5rem"
+            ></i>
+            الاهتمامات
+          </h3>
+
+          <div
+            class="interests-grid"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem"
+          >
+            <!-- اهتمام 1 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-user-tie"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">الإدارة</span>
+            </div>
+
+            <!-- اهتمام 2 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-industry"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">الصناعة والرسم</span>
+            </div>
+
+            <!-- اهتمام 3 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-database"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">البرمجيات وقواعد البيانات</span>
+            </div>
+
+            <!-- اهتمام 4 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-car"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">السيارات والابتكارات</span>
+            </div>
+
+            <!-- اهتمام 5 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-history"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">التاريخ</span>
+            </div>
+
+            <!-- اهتمام 6 -->
+            <div
+              class="interest-item"
+              style="display: flex; align-items: center"
+            >
+              <i
+                class="fas fa-chalkboard-teacher"
+                style="color: #3498db; margin-left: 0.5rem; font-size: 1.2rem"
+              ></i>
+              <span style="color: #555">التدريب</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم الأدوات والتقنيات - معدل للمنتصف -->
+    <section class="section" style="background-color: #0760dc">
+      <h2 class="section-title" style="color: white;">الأدوات والتقنيات</h2>
+      <div class="skills-container" style="max-width: 800px; margin: 0 auto">
+        <!-- البرمجة -->
+        <div
+          class="skill-category"
+          style="
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+          "
+        >
+          <h3
+            style="
+              color: #2c3e50;
+              margin-bottom: 1rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i
+              class="fas fa-code"
+              style="color: #3498db; margin-left: 0.5rem"
+            ></i>
+            لغات البرمجة
+          </h3>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              VB6 / VB.NET
+            </div>
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Python
+            </div>
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              HTML/CSS/JavaScript
+            </div>
+            <div class="skill-item" style="color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Node.js/Express
+            </div>
+          </div>
+        </div>
+
+        <!-- قواعد البيانات -->
+        <div
+          class="skill-category"
+          style="
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+          "
+        >
+          <h3
+            style="
+              color: #2c3e50;
+              margin-bottom: 1rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i
+              class="fas fa-database"
+              style="color: #3498db; margin-left: 0.5rem"
+            ></i>
+            قواعد البيانات
+          </h3>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Microsoft Access
+            </div>
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              MySQL
+            </div>
+            <div class="skill-item" style="color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              SQL Server
+            </div>
+          </div>
+        </div>
+
+        <!-- الصيانة والأدوات -->
+        <div
+          class="skill-category"
+          style="
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+          "
+        >
+          <h3
+            style="
+              color: #2c3e50;
+              margin-bottom: 1rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <i
+              class="fas fa-tools"
+              style="color: #3498db; margin-left: 0.5rem"
+            ></i>
+            البرامج والأدوات
+          </h3>
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              AutoCAD
+            </div>
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Microsoft Office
+            </div>
+            <div class="skill-item" style="margin-bottom: 0.5rem; color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Visual Studio / VS Code
+            </div>
+            <div class="skill-item" style="color: #555 ; font-weight: bold;">
+              <i
+                class="fas fa-check"
+                style="color: #27ae60; margin-left: 0.5rem"
+              ></i>
+              Camtasia
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- قسم مواقع وأدوات الذكاء الاصطناعي -->
+    <section class="section">
+      <h2 class="section-title">مواقع وأدوات الذكاء الاصطناعي</h2>
+      <div class="ai-tools">
+        <div class="ai-tool"><i class="fas"></i> Qwen</div>
+        <div class="ai-tool"><i class="fas"></i> Gemini</div>
+        <div class="ai-tool"><i class="fas"></i> Google Sites</div>
+        <div class="ai-tool"><i class="fas"></i> DeepSeek</div>
+        <div class="ai-tool"><i class="fas"></i> Vercel.com</div>
+        <div class="ai-tool"><i class="fas"></i> Canva.com</div>
+        <div class="ai-tool"><i class="fas"></i> GitHub</div>
+        <div class="ai-tool"><i class="fas"></i> GitHub Copilot</div>
+      </div>
+    </section>
+
+    <!-- قسم فلسفتي بالحياة -->
+    <section class="section">
+      <div class="philosophy">
+        <div class="philosophy-content">
+          <h2 style="color:yellow">مبادئي في التعلم والتطوير</h2>
+
+          <div class="quote">
+            "الذي يتوقف عن التعلم لأنه وصل لقناعة أنه عنده كفاية من العلم...<br>هو في الواقع لم
+            يصل  لمرحلة الكفاية من العلم!!! هو فقط شخص بدأ بالتنازل عن مكانه لشخص ما زال مستمراً في
+            التعلم"
+          </div>
+          <div class="quote">
+            "أي شيء جديد أتعلمه أبحث له مباشرة عن مدخل في حياتي العملية أو الشخصية حتى
+            أطبقه واستفيد منه"
+         
+      </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-name" style="font-weight: bolder;">جميل علقم</div>
+        <p class="footer-quote">
+          خبرة إدارية ومهارات تدريبية
+        </p>
+        <div class="copyright">
+          © <span id="year"></span> جميل علقم جميع الحقوق محفوظة
+        </div>
+      </div>
+    </footer>
+
+    <!-- الجافاسكريبت -->
+    <script src="js/image-fallback.js"></script>
+    <script>
+      // سنة حقوق النشر تلقائية
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // تأثيرات عند التمرير
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".section, .hero-section");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        sections.forEach((section) => {
+          section.style.opacity = 0;
+          section.style.transform = "translateY(20px)";
+          section.style.transition = "all 0.6s ease-out";
+          observer.observe(section);
+        });
+      });
+    </script>
+  </body>
+</html>

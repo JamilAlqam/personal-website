@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جميل علقم - الخدمات والدورات</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Cairo:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* أنماط CSS من صفحة index مع تعديلات */
+      @font-face {
+        font-family: "Bahij TheSansArabic";
+        src: url("fonts/Bahij_TheSansArabic-Plain.woff2") format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Tajawal", "Cairo", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.7;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Bahij TheSansArabic", "Tajawal", sans-serif;
+        font-weight: 700;
+      }
+
+      /* شريط التنقل */
+      .navbar {
+        background-color: whitesmoke;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        color: #0760dc;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: black;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .nav-links a:hover {
+        color: #3498db;
+        transform: translateY(-2px);
+      }
+
+      /* العنوان الرئيسي */
+      .main-title {
+        background-color: #0760dc;
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+      }
+
+      .main-title h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* عناوين الأقسام */
+      .section-title {
+        text-align: center;
+        margin: 3rem auto 2rem;
+        color: #0760dc;
+        position: relative;
+        padding-bottom: 0.5rem;
+        max-width: 1200px;
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #3498db;
+      }
+
+      /* بطاقات الخدمات والدورات */
+      .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 3rem;
+      }
+
+      .service-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .service-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        cursor: pointer;
+      }
+
+      .service-content {
+        padding: 1.5rem;
+      }
+
+      .service-content h3 {
+        color: #0760dc;
+        margin-bottom: 1rem;
+      }
+
+      .service-content p {
+        color: #555;
+        line-height: 1.6;
+      }
+
+      /* نافذة العرض الكامل للصور */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow: auto;
+        animation: fadeIn 0.3s;
+      }
+
+      .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .close-btn:hover {
+        color: #3498db;
+      }
+
+      .modal-caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        text-align: center;
+        color: white;
+        padding: 10px 0;
+        position: absolute;
+        bottom: 20px;
+        left: 10%;
+      }
+
+      /* الفوتر */
+      footer {
+        background-color: #0760dc;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+      }
+
+      .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .footer-name {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-weight: bold;
+      }
+
+      .footer-quote {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+
+      .copyright {
+        font-size: 0.9rem;
+        color: #bdc3c7;
+      }
+
+      /* تأثيرات الحركة */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* التجاوب */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .nav-links {
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .nav-links li {
+          margin: 0.5rem;
+        }
+
+        .cards-container {
+          grid-template-columns: 1fr;
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+      <div class="logo">م. جميل علقم</div>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+        </li>
+        <li>
+          <a href="cv.html"
+            ><i class="fas fa-chalkboard-teacher"></i> السيرة التدريبية</a
+          >
+        </li>
+        <li>
+          <a href="services.html" style="color: #0760dc"
+            ><i class="fas fa-handshake"></i> الخدمات والدورات التدريبية</a
+          >
+        </li>
+        <li>
+          <a href="certificates.html"
+            ><i class="fas fa-certificate"></i> الشهادات</a
+          >
+        </li>
+        <li>
+          <a href="contact.html"><i class="fas fa-envelope"></i> التواصل</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- العنوان الرئيسي -->
+    <section class="main-title">
+      <h1>الخدمات والدورات التدريبية</h1>
+    </section>
+
+    <!-- قسم الخدمات -->
+    <h2 class="section-title">الخدمات</h2>
+    <div class="cards-container">
+      <!-- الخدمة 1 -->
+      <div class="service-card">
+        <img src="images/s1.png" alt="استشارات إدارية وفنية خاصة بالمصانع" />
+        <div class="service-content">
+          <h3>استشارات إدارية وفنية خاصة بالمصانع</h3>
+          <p style="font-weight: bold">
+            تقديم استشارات متخصصة في الإدارة الصناعية والتطوير الفني للمصانع
+            لتحسين الكفاءة والإنتاجية.
+          </p>
+        </div>
+      </div>
+
+      <!-- الخدمة 2 -->
+      <div class="service-card">
+        <img
+          src="images/s2.png"
+          alt="تصميم تطبيقات ويب للواجهة الأمامية حسب الطلب"
+        />
+        <div class="service-content">
+          <h3>تصميم تطبيقات ويب للواجهة الأمامية حسب الطلب</h3>
+          <p style="font-weight: bold">
+            تصميم وتطوير واجهات مستخدم احترافية لتطبيقات الويب باستخدام أحدث
+            التقنيات.
+          </p>
+        </div>
+      </div>
+
+      <!-- الخدمة 3 -->
+      <div class="service-card">
+        <img src="images/s3.png" alt="التدقيق وعمل الملخصات والتقارير الفنية" />
+        <div class="service-content">
+          <h3>التدقيق وعمل الملخصات والتقارير الفنية</h3>
+          <p style="font-weight: bold">
+            مراجعة وتدقيق المستندات سواء كانت فنية أو مالية أو غيرها من المجالات
+            وإعداد ملخصات وتقارير دقيقة وواضحة.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- قسم الدورات التدريبية -->
+    <h2 class="section-title">الدورات التدريبية</h2>
+    <div class="cards-container">
+      <!-- الدورة 1 -->
+      <div class="service-card">
+        <img
+          src="images/t1.png"
+          alt="رحلة التفوق العلمي (مهارات مساندة للقراءة والتعلم)"
+        />
+        <div class="service-content">
+          <h3>رحلة التفوق العلمي</h3>
+          <p style="font-weight: bold">
+            مهارات مساندة للقراءة والتعلم - تطوير أساليب البحث والدراسة والقراءة
+            الفعالة.
+          </p>
+          <p><mark style="background-color: yellowgreen">12 ساعة</mark></p>
+        </div>
+      </div>
+
+      <!-- الدورة 2 -->
+      <div class="service-card">
+        <img
+          src="images/t2.png"
+          alt="إعداد الجزء الإلكتروني من الحقيبة التدريبية"
+        />
+        <div class="service-content">
+          <h3>إعداد الجزء الإلكتروني من الحقيبة التدريبية</h3>
+          <p style="font-weight: bold">
+            كل مايخص الحقيبة التدريبية من العمل على الحاسوب
+          </p>
+          <p><mark style="background-color: yellowgreen">24 ساعة</mark></p>
+        </div>
+      </div>
+
+      <!-- الدورة 3 -->
+      <div class="service-card">
+        <img src="images/t3.png" alt="تصميم قواعد البيانات باستخدام الأكسس" />
+        <div class="service-content">
+          <h3>تصميم قواعد البيانات باستخدام الأكسس</h3>
+          <p style="font-weight: bold">
+            إنشاء وإدارة قواعد البيانات باستخدام برنامج Microsoft Access.
+          </p>
+          <p><mark style="background-color: yellowgreen">30 ساعة</mark></p>
+        </div>
+      </div>
+
+      <!-- الدورة 4 -->
+      <div class="service-card">
+        <img src="images/t4.png" alt="دورة الاكسل الشاملة (مبتدأ حتى متقدم)" />
+        <div class="service-content">
+          <h3>دورة الاكسل الشاملة</h3>
+          <p style="font-weight: bold">
+            من المستوى المبتدئ إلى المتقدم - إتقان جميع وظائف Excel.
+          </p>
+          <p><mark style="background-color: yellowgreen">30 ساعة</mark></p>
+        </div>
+      </div>
+
+      <!-- الدورة 5 -->
+      <div class="service-card">
+        <img
+          src="images/t5.png"
+          alt="التطوير الشامل لمواقع الإنترنت باستخدام الذكاء الاصطناعي"
+        />
+        <div class="service-content">
+          <h3>التطوير الشامل لمواقع الإنترنت</h3>
+          <p style="font-weight: bold">
+            استخدام الذكاء الاصطناعي في تطوير وتصميم مواقع الويب.
+          </p>
+          <p><mark style="background-color: yellowgreen">30 ساعة</mark></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- نافذة العرض الكامل للصور -->
+    <div id="imageModal" class="modal">
+      <span class="close-btn">&times;</span>
+      <img class="modal-content" id="expandedImg" />
+      <div id="imgCaption" class="modal-caption"></div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-name">جميل علقم</div>
+        <p class="footer-quote">خبرة إدارية ومهارات تدريبية</p>
+        <div class="copyright">
+          © <span id="year"></span> جميل علقم جميع الحقوق محفوظة
+        </div>
+      </div>
+    </footer>
+
+    <!-- الجافاسكريبت -->
+    <script src="js/image-fallback.js"></script>
+    <script>
+      // سنة حقوق النشر تلقائية
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // دالة لعرض الصورة بحجم كامل
+      function expandImage(img) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("expandedImg");
+        const captionText = document.getElementById("imgCaption");
+
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        captionText.innerHTML = img.alt;
+
+        // إغلاق عند النقر على الزر
+        document.querySelector(".close-btn").onclick = function () {
+          modal.style.display = "none";
+        };
+
+        // إغلاق عند النقر خارج الصورة
+        modal.onclick = function (event) {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
+
+      // إضافة حدث النقر لصور الخدمات والدورات
+      document.addEventListener("DOMContentLoaded", function () {
+        const serviceImages = document.querySelectorAll(".service-card img");
+
+        serviceImages.forEach((img) => {
+          img.onclick = function () {
+            expandImage(this);
+          };
+        });
+      });
+    </script>
+  </body>
+</html>

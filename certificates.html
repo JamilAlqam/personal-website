@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جميل علقم - الشهادات</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Cairo:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* أنماط CSS من صفحة index مع تعديلات */
+      @font-face {
+        font-family: "Bahij TheSansArabic";
+        src: url("fonts/Bahij_TheSansArabic-Plain.woff2") format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Tajawal", "Cairo", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.7;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Bahij TheSansArabic", "Tajawal", sans-serif;
+        font-weight: 700;
+      }
+
+      /* شريط التنقل */
+      .navbar {
+        background-color: whitesmoke;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        color: #0760dc;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: black;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .nav-links a:hover {
+        color: #3498db;
+        transform: translateY(-2px);
+      }
+
+      /* العنوان الرئيسي */
+      .main-title {
+        background-color: #0760dc;
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+      }
+
+      .main-title h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* عناوين الأقسام */
+      .section-title {
+        text-align: center;
+        margin: 3rem auto 2rem;
+        color: #0760dc;
+        position: relative;
+        padding-bottom: 0.5rem;
+        max-width: 1200px;
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #3498db;
+      }
+
+      /* بطاقات الشهادات */
+      .cards-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem 3rem;
+      }
+
+      .certificate-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .certificate-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .certificate-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: contain;
+        background: #f9f9f9;
+        padding: 1rem;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+      }
+
+      .certificate-content {
+        padding: 1.5rem;
+      }
+
+      .certificate-content h3 {
+        color: #0760dc;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+      }
+
+      .certificate-content p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 0.8rem;
+      }
+
+      .issuer {
+        font-weight: bold;
+        color: #2c3e50;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #ddd;
+      }
+
+      /* نافذة العرض الكامل للصور */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow: auto;
+        animation: fadeIn 0.3s;
+      }
+
+      .modal-content {
+        margin: auto;
+        display: block;
+        max-width: 90%;
+        max-height: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .close-btn:hover {
+        color: #3498db;
+      }
+
+      .modal-caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        text-align: center;
+        color: white;
+        padding: 10px 0;
+        position: absolute;
+        bottom: 20px;
+        left: 10%;
+      }
+
+      /* الفوتر */
+      footer {
+        background-color: #0760dc;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+      }
+
+      .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .footer-name {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-weight: bold;
+      }
+
+      .footer-quote {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+
+      .copyright {
+        font-size: 0.9rem;
+        color: #bdc3c7;
+      }
+
+      /* تأثيرات الحركة */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* التجاوب */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .nav-links {
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .nav-links li {
+          margin: 0.5rem;
+        }
+
+        .cards-container {
+          grid-template-columns: 1fr;
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <div>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+      <div class="logo">م. جميل علقم</div>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+        </li>
+        <li>
+          <a href="cv.html"
+            ><i class="fas fa-chalkboard-teacher"></i> السيرة التدريبية</a
+          >
+        </li>
+        <li>
+          <a href="services.html"><i class="fas fa-handshake"></i> الخدمات</a>
+        </li>
+        <li>
+          <a href="certificates.html" style="color: #0760dc"
+            ><i class="fas fa-certificate"></i> الشهادات</a
+          >
+        </li>
+        <li>
+          <a href="contact.html"><i class="fas fa-envelope"></i> التواصل</a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- العنوان الرئيسي 
+    <section class="main-title">
+      <h1>الشهادات المهنية والعلمية</h1>
+    </section>-->
+
+    <!-- تعديل قسم العنوان الرئيسي -->
+    <section class="main-title">
+      <h1>الشهادات</h1>
+    </section>
+
+    <!-- إضافة عنوان ثانوي قبل قسم الشهادات المهنية -->
+    <h2 class="section-title">الشهادات المهنية والعلمية</h2>
+    <div class="cards-container">
+      <!-- محتوى الشهادات المهنية والعلمية هنا -->
+    </div>
+
+    <!-- قسم الشهادات المهنية والعلمية -->
+    <div class="cards-container">
+      <!-- الشهادة 1 -->
+      <div class="certificate-card">
+        <img
+          src="images/C1.png"
+          alt="شهادة خبرة مهنية - مدير المصنع - مصنع قلوبال استيل"
+        />
+        <div class="certificate-content">
+          <h3>شهادة خبرة مهنية</h3>
+          <p style="font-weight: bold;">مدير المصنع</p>
+          <p style="font-weight: bold;">7/2012 - 1/2022</p>
+          <div class="issuer">مصنع قلوبال استيل</div>
+        </div>
+      </div>
+
+      <!-- الشهادة 2 -->
+      <div class="certificate-card">
+        <img
+          src="images/C2.png"
+          alt="شهادة خبرة مهنية - مدير المصنع والإنتاج - المصنع السوداني الماليزي"
+        />
+        <div class="certificate-content">
+          <h3>شهادة خبرة مهنية</h3>
+          <p style="font-weight: bold;">مدير المصنع والإنتاج</p>
+          <p style="font-weight: bold;">12/2003 - 6/2011</p>
+          <div class="issuer">المصنع السوداني الماليزي</div>
+        </div>
+      </div>
+
+      <!-- الشهادة 3 -->
+      <div class="certificate-card">
+        <img
+          src="images/C3.png"
+          alt="شهادة علمية - بكالوريوس هندسة ميكانيكية - جامعة البلقاء التطبيقية"
+        />
+        <div class="certificate-content">
+          <h3>شهادة علمية</h3>
+          <p style="font-weight: bold;">بكالوريوس هندسة ميكانيكية / إنتاج وآلات</p>
+          <p style="font-weight: bold;">2003</p>
+          <div class="issuer">جامعة البلقاء التطبيقية / كلية الطفيلة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- قسم شهادات التدريب - النسخة المصححة -->
+<h2 class="section-title">شهادات التدريب</h2>
+<div class="cards-container">
+    <!-- الشهادة 4 -->
+    <div class="certificate-card">
+        <img src="images/C4.png" alt="شهادة TOT - مركز توب كوالتي">
+        <div class="certificate-content">
+            <h3>شهادة إتمام دورة</h3>
+            <p style="font-weight: bold;">TOT - 50 Hours</p>
+            <div class="issuer">مركز توب كوالتي</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 5 -->
+    <div class="certificate-card">
+        <img src="images/C5.png" alt="شهادة خبرة تدريب - مركز توب كوالتي">
+        <div class="certificate-content">
+            <h3>شهادة خبرة تدريب</h3>
+            <p style="font-weight: bold;">5 دورات تدريبية</p>
+            <div class="issuer">مركز توب كوالتي</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 6 -->
+    <div class="certificate-card">
+        <img src="images/C6.png" alt="شهادة إيداع - دائرة المكتبة الوطنية">
+        <div class="certificate-content">
+            <h3>شهادة إيداع</h3>
+            <p style="font-weight: bold;">دورة تدريبية مسجلة (تصميم قواعد البيانات للاستخدام الفردي - 11 ساعة)</p>
+            <div class="issuer">دائرة المكتبة الوطنية</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 7 -->
+    <div class="certificate-card">
+        <img src="images/C7.png" alt="شهادة إتمام دورة - مركز أفروتك">
+        <div class="certificate-content">
+            <h3>شهادة إتمام دورة</h3>
+            <p style="font-weight: bold;">Full Stack Web Development - 90 Hours</p>
+            <div class="issuer">مركز أفروتك</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 8 -->
+    <div class="certificate-card">
+        <img src="images/C8.png" alt="شهادة حضور ورشة - مؤسسة ولي العهد">
+        <div class="certificate-content">
+            <h3>شهادة حضور ورشة</h3>
+            <p style="font-weight: bold;">تطوير تطبيقات الويب بالذكاء الاصطناعي</p>
+            <div class="issuer">مؤسسة ولي العهد</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 9 -->
+    <div class="certificate-card">
+        <img src="images/C9.JPG" alt="شهادة حضور برنامج تدريبي - الخبراء العرب في الهندسة والإدارة">
+        <div class="certificate-content">
+            <h3>شهادة حضور برنامج تدريبي</h3>
+            <p style="font-weight: bold;">التدقيق الداخلي لأنظمة الجودة</p>
+            <div class="issuer">الخبراء العرب في الهندسة والإدارة</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 10 -->
+    <div class="certificate-card">
+        <img src="images/C10.JPG" alt="شهادة إتمام دورة - مركز تدريب المهندسين">
+        <div class="certificate-content">
+            <h3>شهادة إتمام دورة</h3>
+            <p style="font-weight: bold;">Technical Writing (Arabic & English) - 18 Hours</p>
+            <div class="issuer">مركز تدريب المهندسين</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 11 -->
+    <div class="certificate-card">
+        <img src="images/C11.JPG" alt="شهادة إتمام دورة - مركز تدريب المهندسين">
+        <div class="certificate-content">
+            <h3>شهادة إتمام دورة</h3>
+            <p style="font-weight: bold;">AutoCAD 2D 2005 - 30 Hours</p>
+            <div class="issuer">مركز تدريب المهندسين</div>
+        </div>
+    </div>
+    
+    <!-- الشهادة 12 -->
+    <div class="certificate-card">
+        <img src="images/C12.png" alt="شهادة إتمام دورة - مركز تدريب المهندسين">
+        <div class="certificate-content">
+            <h3>شهادة إتمام دورة</h3>
+            <p style="font-weight: bold;">AutoCAD 3D 2010 - 40 Hours</p>
+            <div class="issuer">مركز تدريب المهندسين</div>
+        </div>
+    </div>
+</div> <!-- إغلاق div.cards-container هنا فقط -->
+
+    <!-- نافذة العرض الكامل للصور -->
+    <div id="imageModal" class="modal">
+      <span class="close-btn">&times;</span>
+      <img class="modal-content" id="expandedImg" />
+      <div id="imgCaption" class="modal-caption"></div>
+    </div>
+    
+    <!-- الفوتر -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-name">جميل علقم</div>
+        <p class="footer-quote">خبرة إدارية ومهارات تدريبية</p>
+        <div class="copyright">
+          © <span id="year"></span> جميل علقم جميع الحقوق محفوظة
+        </div>
+      </div>
+    </footer>
+
+    <!-- الجافاسكريبت -->
+    <script src="js/image-fallback.js"></script>
+    <script>
+      // سنة حقوق النشر تلقائية
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // دالة لعرض الصورة بحجم كامل
+      function expandImage(img) {
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("expandedImg");
+        const captionText = document.getElementById("imgCaption");
+
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        captionText.innerHTML = img.alt;
+
+        // إغلاق عند النقر على الزر
+        document.querySelector(".close-btn").onclick = function () {
+          modal.style.display = "none";
+        };
+
+        // إغلاق عند النقر خارج الصورة
+        modal.onclick = function (event) {
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        };
+      }
+
+      // إضافة حدث النقر لصور الشهادات
+      document.addEventListener("DOMContentLoaded", function () {
+        const certificateImages = document.querySelectorAll(
+          ".certificate-card img"
+        );
+
+        certificateImages.forEach((img) => {
+          img.onclick = function () {
+            expandImage(this);
+          };
+        });
+      });
+    </script>
+  </body>
+</html>

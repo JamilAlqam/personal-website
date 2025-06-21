@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>جميل علقم - التواصل</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Cairo:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* أنماط CSS من صفحة index مع تعديلات */
+      @font-face {
+        font-family: "Bahij TheSansArabic";
+        src: url("fonts/Bahij_TheSansArabic-Plain.woff2") format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Tajawal", "Cairo", sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.7;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Bahij TheSansArabic", "Tajawal", sans-serif;
+        font-weight: 700;
+      }
+
+      /* شريط التنقل */
+      .navbar {
+        background-color: whitesmoke;
+        padding: 1rem 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        color: #0760dc;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: black;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-links a i {
+        margin-left: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .nav-links a:hover {
+        color: #3498db;
+        transform: translateY(-2px);
+      }
+
+      /* العنوان الرئيسي */
+      .main-title {
+        background-color: #0760dc;
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+      }
+
+      .main-title h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      /* محتوى التواصل */
+      .contact-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      .intro-text {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 3rem;
+        line-height: 1.8;
+      }
+
+      .contact-section {
+        text-align: center;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 3rem;
+      }
+
+      .section-title {
+        color: #0760dc;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+
+      .section-title:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: #3498db;
+      }
+
+      /* نموذج الاتصال */
+      .contact-form {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-weight: 500;
+      }
+
+      .form-control {
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-family: inherit;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      /* تحميل الملفات */
+      .file-upload {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      .file-upload input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+
+      .file-upload-label {
+        display: block;
+        padding: 0.8rem 1rem;
+        border: 1px dashed #ddd;
+        border-radius: 5px;
+        text-align: center;
+        color: #555;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        word-wrap: break-word;
+        white-space: normal;
+        line-height: 1.4;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .file-upload-label:hover {
+        border-color: #3498db;
+        color: #3498db;
+      }
+
+      .file-upload-label.has-files {
+        border-color: #27ae60;
+        background-color: #f8fff8;
+        color: #27ae60;
+        border-style: solid;
+      }
+
+      .file-upload-label.has-files:hover {
+        border-color: #229954;
+        background-color: #f0fff0;
+        color: #229954;
+      }
+
+      .file-info {
+        font-size: 0.9rem;
+        color: #777;
+        margin-top: 0.5rem;
+      }
+
+      .selected-files-preview {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+        font-size: 0.9rem;
+        color: #495057;
+        display: none;
+      }
+
+      .selected-files-preview.show {
+        display: block;
+      }
+
+      .selected-files-preview .file-name {
+        display: inline-block;
+        background-color: #e7f3ff;
+        color: #0056b3;
+        padding: 0.2rem 0.5rem;
+        margin: 0.1rem;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        border: 1px solid #b3d7ff;
+      }
+
+      .file-list {
+        margin-top: 1rem;
+        border-top: 1px solid #eee;
+        padding-top: 1rem;
+      }
+
+      .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f5f5f5;
+      }
+
+      .file-item-name {
+        flex: 1;
+        color: #555;
+      }
+
+      .file-item-size {
+        color: #777;
+        font-size: 0.9rem;
+      }
+
+      .file-item-remove {
+        color: #e74c3c;
+        margin-right: 0.5rem;
+        cursor: pointer;
+      }
+
+      .remaining-space {
+        text-align: right;
+        font-size: 0.9rem;
+        color: #3498db;
+        margin-top: 0.5rem;
+      }
+
+      /* زر الإرسال */
+      .submit-btn {
+        background-color: #0760dc;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        margin-top: 1rem;
+      }
+
+      .submit-btn:hover {
+        background-color: #0650b8;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* قسم الواتساب */
+      .whatsapp-section {
+        text-align: center;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .whatsapp-btn {
+        display: inline-flex;
+        align-items: center;
+        background-color: #25d366;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .whatsapp-btn i {
+        font-size: 1.5rem;
+        margin-left: 0.5rem;
+      }
+
+      .whatsapp-btn:hover {
+        background-color: #128c7e;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* الفوتر */
+      footer {
+        background-color: #0760dc;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        margin-top: 3rem;
+      }
+
+      .footer-content {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .footer-name {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        font-family: "Bahij TheSansArabic", sans-serif;
+        font-weight: bold;
+      }
+
+      .footer-quote {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+
+      .copyright {
+        font-size: 0.9rem;
+        color: #bdc3c7;
+      }
+
+      /* التجاوب */
+      @media (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          padding: 1rem;
+        }
+
+        .nav-links {
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .nav-links li {
+          margin: 0.5rem;
+        }
+
+        .contact-container {
+          padding: 0 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+      <div class="logo">م. جميل علقم</div>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+        </li>
+        <li>
+          <a href="cv.html"
+            ><i class="fas fa-chalkboard-teacher"></i> السيرة التدريبية</a
+          >
+        </li>
+        <li>
+          <a href="services.html"><i class="fas fa-handshake"></i> الخدمات</a>
+        </li>
+        <li>
+          <a href="certificates.html"
+            ><i class="fas fa-certificate"></i> الشهادات</a
+          >
+        </li>
+        <li>
+          <a href="contact.html" style="color: #0760dc"
+            ><i class="fas fa-envelope"></i> التواصل</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <!-- العنوان الرئيسي -->
+    <section class="main-title">
+      <h1>التواصل</h1>
+    </section>
+
+    <!-- محتوى التواصل -->
+    <div class="contact-container">
+      <p class="intro-text">
+        مع خبرة تزيد عن 18 عامًا في الإدارة الصناعية والتدريب، أنا هنا لتقديم
+        الاستشارات الفنية وحلول التطوير المهني. لا تتردد في التواصل معي لأي
+        استفسارات أو تعاون مهني.
+      </p>
+
+      <!-- نموذج البريد الإلكتروني -->
+      <div class="contact-section">
+        <h2 class="section-title">لإرسال رسالة عبر البريد الإلكتروني</h2>
+
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="name">اسمك</label>
+            <input type="text" id="name" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">بريدك الإلكتروني</label>
+            <input type="email" id="email" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="message">نص الرسالة</label>
+            <textarea id="message" class="form-control" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>تحميل ملف (اختياري)</label>
+            <div class="file-upload">
+              <label for="fileUpload" class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt"></i> انقر لرفع الملفات
+              </label>
+              <input
+                type="file"
+                id="fileUpload"
+                multiple
+                accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx"
+              />
+              <p class="file-info">
+                الملفات المسموح بها: PDF, Excel, Word, JPG, PNG<br />
+                (بحد أقصى 10MB للمجموع الكلي للمرفقات)
+              </p>
+
+              <!-- عرض أسماء الملفات المختارة -->
+              <div class="selected-files-preview" id="selectedFilesPreview">
+                <strong>الملفات المختارة:</strong>
+                <div id="selectedFilesList"></div>
+              </div>
+            </div>
+
+            <div class="file-list" id="fileList">
+              <!-- الملفات المرفوعة ستظهر هنا -->
+            </div>
+
+            <div class="remaining-space" id="remainingSpace">
+              الحجم المتاح: 10MB
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">إرسال الرسالة</button>
+        </form>
+      </div>
+
+      <!-- قسم الواتساب -->
+      <div class="whatsapp-section">
+        <h2 class="section-title">للتواصل عبر تطبيق الواتساب</h2>
+        <p style="color: #555; margin-bottom: 1rem">
+          اضغط على الزر أدناه للتواصل مباشرة عبر الواتساب
+        </p>
+
+        <a
+          href="https://wa.me/962796843499"
+          class="whatsapp-btn"
+          target="_blank"
+        >
+          <span>تواصل عبر الواتساب</span>
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- الفوتر -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-name">جميل علقم</div>
+        <p class="footer-quote">خبرة إدارية ومهارات تدريبية</p>
+        <div class="copyright">
+          © <span id="year"></span> جميل علقم جميع الحقوق محفوظة
+        </div>
+      </div>
+    </footer>
+
+    <!-- الجافاسكريبت -->
+    <script src="js/image-fallback.js"></script>
+    <script>
+      // سنة حقوق النشر تلقائية
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // إدارة تحميل الملفات
+      const fileUpload = document.getElementById("fileUpload");
+      const fileList = document.getElementById("fileList");
+      const remainingSpace = document.getElementById("remainingSpace");
+      const maxSize = 10 * 1024 * 1024; // 10MB بالبايت
+      let totalSize = 0;
+      let selectedFiles = []; // مصفوفة لحفظ جميع الملفات المختارة
+
+      fileUpload.addEventListener("change", function (e) {
+        const newFiles = Array.from(e.target.files);
+
+        // إضافة الملفات الجديدة إلى المصفوفة (تجنب التكرار)
+        newFiles.forEach((newFile) => {
+          const isDuplicate = selectedFiles.some(
+            (existingFile) =>
+              existingFile.name === newFile.name &&
+              existingFile.size === newFile.size &&
+              existingFile.lastModified === newFile.lastModified
+          );
+
+          if (!isDuplicate) {
+            selectedFiles.push(newFile);
+          }
+        });
+
+        // إعادة تعيين input لتجنب مشاكل المتصفح
+        e.target.value = "";
+
+        // إعادة بناء قائمة الملفات
+        rebuildFileList();
+      });
+
+      // دالة لإعادة بناء قائمة الملفات
+      function rebuildFileList() {
+        fileList.innerHTML = "";
+        totalSize = 0;
+
+        // تحديث نص الزر ليعرض عدد الملفات المختارة
+        const uploadLabel = document.querySelector(".file-upload-label");
+        const selectedFilesPreview = document.getElementById(
+          "selectedFilesPreview"
+        );
+        const selectedFilesList = document.getElementById("selectedFilesList");
+
+        if (selectedFiles.length === 0) {
+          uploadLabel.innerHTML =
+            '<i class="fas fa-cloud-upload-alt"></i> انقر لرفع الملفات';
+          uploadLabel.removeAttribute("title");
+          uploadLabel.classList.remove("has-files");
+          selectedFilesPreview.classList.remove("show");
+        } else {
+          // تحديث نص الزر
+          uploadLabel.innerHTML = `<i class="fas fa-check-circle"></i> تم اختيار ${
+            selectedFiles.length
+          } ${selectedFiles.length === 1 ? "ملف" : "ملفات"}`;
+          uploadLabel.classList.add("has-files");
+
+          // عرض أسماء الملفات في القسم المنفصل
+          selectedFilesList.innerHTML = "";
+          selectedFiles.forEach((file) => {
+            const fileSpan = document.createElement("span");
+            fileSpan.className = "file-name";
+            fileSpan.textContent = file.name;
+            selectedFilesList.appendChild(fileSpan);
+          });
+
+          selectedFilesPreview.classList.add("show");
+
+          // إضافة tooltip مع جميع أسماء الملفات
+          const allFileNames = selectedFiles
+            .map((file) => file.name)
+            .join("\n• ");
+          uploadLabel.setAttribute(
+            "title",
+            `الملفات المختارة:\n• ${allFileNames}`
+          );
+        }
+
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const file = selectedFiles[i];
+          totalSize += file.size;
+
+          const fileItem = document.createElement("div");
+          fileItem.className = "file-item";
+
+          const fileItemName = document.createElement("span");
+          fileItemName.className = "file-item-name";
+          fileItemName.textContent = file.name;
+
+          const fileItemSize = document.createElement("span");
+          fileItemSize.className = "file-item-size";
+          fileItemSize.textContent = formatFileSize(file.size);
+
+          const fileItemRemove = document.createElement("span");
+          fileItemRemove.className = "file-item-remove";
+          fileItemRemove.innerHTML = "&times;";
+          fileItemRemove.onclick = function () {
+            // إزالة الملف من المصفوفة
+            const fileIndex = selectedFiles.findIndex(
+              (f) =>
+                f.name === file.name &&
+                f.size === file.size &&
+                f.lastModified === file.lastModified
+            );
+            if (fileIndex > -1) {
+              selectedFiles.splice(fileIndex, 1);
+            }
+
+            // إعادة بناء القائمة
+            rebuildFileList();
+          };
+
+          fileItem.appendChild(fileItemRemove);
+          fileItem.appendChild(fileItemName);
+          fileItem.appendChild(fileItemSize);
+          fileList.appendChild(fileItem);
+        }
+
+        updateRemainingSpace();
+      }
+
+      // دالة لتحديث نص زر رفع الملفات (لم تعد مستخدمة - تم دمجها في rebuildFileList)
+      function updateFileUploadLabel() {
+        rebuildFileList();
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " بايت";
+        else if (bytes < 1024 * 1024)
+          return (bytes / 1024).toFixed(1) + " كيلوبايت";
+        else return (bytes / (1024 * 1024)).toFixed(1) + " ميجابايت";
+      }
+
+      function updateRemainingSpace() {
+        const remaining = maxSize - totalSize;
+        if (remaining >= 0) {
+          remainingSpace.textContent = `الحجم المتاح: ${formatFileSize(
+            remaining
+          )}`;
+          remainingSpace.style.color = "#3498db";
+        } else {
+          remainingSpace.textContent = `لقد تجاوزت الحد المسموح به بمقدار ${formatFileSize(
+            -remaining
+          )}`;
+          remainingSpace.style.color = "#e74c3c";
+        }
+      }
+
+      // إرسال النموذج
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const submitBtn = document.querySelector(".submit-btn");
+          const originalText = submitBtn.textContent;
+
+          // تعطيل الزر وإظهار حالة التحميل
+          submitBtn.disabled = true;
+          submitBtn.textContent = "جاري الإرسال...";
+          submitBtn.style.backgroundColor = "#95a5a6";
+
+          try {
+            // جمع بيانات النموذج
+            const formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("subject", "رسالة من موقع جميل علقم");
+            formData.append(
+              "message",
+              document.getElementById("message").value
+            );
+
+            // إضافة الملفات المرفوعة من المصفوفة
+            if (selectedFiles.length > 0) {
+              for (let i = 0; i < selectedFiles.length; i++) {
+                formData.append("attachments", selectedFiles[i]);
+              }
+            }
+
+            // إرسال البيانات للخادم
+            const response = await fetch("/send-email", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+              // نجح الإرسال
+              showMessage(
+                "تم إرسال الرسالة بنجاح! شكراً لتواصلك معنا.",
+                "success"
+              );
+              this.reset();
+              selectedFiles = []; // مسح مصفوفة الملفات
+              fileList.innerHTML = "";
+              totalSize = 0;
+              updateRemainingSpace();
+              // إعادة تعيين نص زر رفع الملفات
+              const uploadLabel = document.querySelector(".file-upload-label");
+              const selectedFilesPreview = document.getElementById(
+                "selectedFilesPreview"
+              );
+              uploadLabel.innerHTML =
+                '<i class="fas fa-cloud-upload-alt"></i> انقر لرفع الملفات';
+              uploadLabel.classList.remove("has-files");
+              uploadLabel.removeAttribute("title");
+              selectedFilesPreview.classList.remove("show");
+            } else {
+              // فشل الإرسال
+              showMessage(
+                result.message ||
+                  "حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.",
+                "error"
+              );
+            }
+          } catch (error) {
+            console.error("خطأ في الإرسال:", error);
+            showMessage(
+              "حدث خطأ في الاتصال. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.",
+              "error"
+            );
+          } finally {
+            // إعادة تفعيل الزر
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            submitBtn.style.backgroundColor = "#0760dc";
+          }
+        });
+
+      // دالة لإظهار الرسائل
+      function showMessage(message, type) {
+        // إزالة أي رسالة سابقة
+        const existingMessage = document.querySelector(".message-alert");
+        if (existingMessage) {
+          existingMessage.remove();
+        }
+
+        // إنشاء عنصر الرسالة
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "message-alert";
+        messageDiv.textContent = message;
+
+        // تحديد الألوان حسب نوع الرسالة
+        if (type === "success") {
+          messageDiv.style.backgroundColor = "#d4edda";
+          messageDiv.style.color = "#155724";
+          messageDiv.style.borderColor = "#c3e6cb";
+        } else {
+          messageDiv.style.backgroundColor = "#f8d7da";
+          messageDiv.style.color = "#721c24";
+          messageDiv.style.borderColor = "#f5c6cb";
+        }
+
+        // تطبيق الأنماط
+        messageDiv.style.padding = "1rem";
+        messageDiv.style.marginBottom = "1rem";
+        messageDiv.style.border = "1px solid";
+        messageDiv.style.borderRadius = "5px";
+        messageDiv.style.textAlign = "center";
+        messageDiv.style.fontWeight = "bold";
+
+        // إدراج الرسالة قبل النموذج
+        const form = document.getElementById("contactForm");
+        form.parentNode.insertBefore(messageDiv, form);
+
+        // إزالة الرسالة بعد 5 ثوان
+        setTimeout(() => {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 5000);
+      }
+    </script>
+  </body>
+</html>
