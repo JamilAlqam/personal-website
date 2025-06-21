@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0" />
     <title>جميل علقم - الصفحة الرئيسية</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -34,6 +34,10 @@
         background-color: #f5f5f5; /* تغيير لون الخلفية */
         color: #333;
         line-height: 1.7;
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        overflow-x: hidden;
       }
 
       h1,
@@ -409,29 +413,227 @@
         }
       }
 
-      /* التجاوب */
+      /* التجاوب المحسن */
       @media (max-width: 768px) {
+        /* شريط التنقل */
         .navbar {
           flex-direction: column;
           padding: 1rem;
+          text-align: center;
+        }
+
+        .logo {
+          font-size: 1.5rem !important;
+          margin-bottom: 1rem;
         }
 
         .nav-links {
           margin-top: 1rem;
-          flex-wrap: wrap;
-          justify-content: center;
+          flex-direction: column;
+          gap: 0.5rem;
         }
 
         .nav-links li {
-          margin: 0.5rem;
+          margin: 0.25rem 0;
         }
 
-        .about-content {
-          grid-template-columns: 1fr;
+        .nav-links a {
+          font-size: 1rem;
+          padding: 0.75rem 1rem;
+          display: block;
+          border-radius: 5px;
+          background: rgba(255,255,255,0.1);
         }
 
+        /* قسم الهوية */
+        .hero-section {
+          padding: 2rem 1rem !important;
+          min-height: auto !important;
+        }
+
+        .profile-container {
+          text-align: center;
+          max-width: 100%;
+        }
+
+        .profile-image {
+          width: 120px !important;
+          height: 120px !important;
+          margin-bottom: 1rem;
+        }
+
+        .full-name {
+          font-size: 1.5rem !important;
+          line-height: 1.3;
+          margin-bottom: 0.5rem;
+        }
+
+        .nickname {
+          font-size: 1rem !important;
+          margin-bottom: 1rem;
+        }
+
+        .experience {
+          font-size: 0.9rem !important;
+          line-height: 1.5;
+          margin-bottom: 1rem;
+        }
+
+        .details {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .detail-item {
+          font-size: 0.85rem !important;
+          text-align: center;
+        }
+
+        /* الأقسام العامة */
+        .section {
+          padding: 2rem 1rem !important;
+        }
+
+        .section-title {
+          font-size: 1.8rem !important;
+          margin-bottom: 1.5rem;
+        }
+
+        /* قسم نبذة عامة */
+        .about-container {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+          padding: 0 !important;
+        }
+
+        .experience-section,
+        .interests-section {
+          padding: 1.5rem !important;
+          margin-bottom: 1rem;
+        }
+
+        .interests-grid {
+          grid-template-columns: 1fr !important;
+          gap: 1rem !important;
+        }
+
+        /* قسم المهارات */
         .skills-container {
-          grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          max-width: 100% !important;
+          padding: 0 !important;
+        }
+
+        .skill-category {
+          margin-bottom: 1rem !important;
+          padding: 1rem !important;
+        }
+
+        .skill-category h3 {
+          font-size: 1.2rem !important;
+        }
+
+        .skill-item {
+          font-size: 0.9rem !important;
+        }
+
+        /* أدوات الذكاء الاصطناعي */
+        .ai-tools {
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 0.5rem !important;
+        }
+
+        .ai-tool {
+          font-size: 0.8rem !important;
+          padding: 0.5rem !important;
+        }
+
+        /* قسم الفلسفة */
+        .philosophy {
+          padding: 1rem !important;
+        }
+
+        .philosophy-content h2 {
+          font-size: 1.5rem !important;
+        }
+
+        .quote {
+          font-size: 0.9rem !important;
+          line-height: 1.6;
+          padding: 1rem !important;
+          margin-bottom: 1rem;
+        }
+
+        /* الفوتر */
+        footer {
+          padding: 1.5rem 1rem !important;
+        }
+
+        .footer-name {
+          font-size: 1.3rem !important;
+        }
+
+        .footer-quote {
+          font-size: 0.9rem !important;
+        }
+
+        .copyright {
+          font-size: 0.8rem !important;
+        }
+      }
+
+      /* تجاوبية للشاشات الصغيرة جداً */
+      @media (max-width: 480px) {
+        .full-name {
+          font-size: 1.3rem !important;
+        }
+
+        .section-title {
+          font-size: 1.5rem !important;
+        }
+
+        .ai-tools {
+          grid-template-columns: 1fr !important;
+        }
+
+        .nav-links a {
+          font-size: 0.9rem;
+        }
+
+        /* تحسينات إضافية للشاشات الصغيرة */
+        .experience-section,
+        .interests-section {
+          padding: 1rem !important;
+        }
+
+        .skill-category {
+          padding: 0.75rem !important;
+        }
+
+        .quote {
+          font-size: 0.85rem !important;
+          padding: 0.75rem !important;
+        }
+      }
+
+      /* إصلاحات عامة للتجاوبية */
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      /* تحسين النصوص على الشاشات الصغيرة */
+      @media (max-width: 768px) {
+        h1, h2, h3, h4, h5, h6 {
+          word-wrap: break-word;
+          hyphens: auto;
+        }
+
+        p, span, div {
+          word-wrap: break-word;
         }
       }
     </style>
